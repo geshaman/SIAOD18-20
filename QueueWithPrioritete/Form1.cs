@@ -32,17 +32,6 @@ namespace QueueWithPrioritete
                 ArrayDataGridView.Columns[i].Width = 55;
             }
 
-            ChooseResultdataGridView.ColumnHeadersVisible = false;
-            ChooseResultdataGridView.RowHeadersVisible = false;
-            ChooseResultdataGridView.RowCount = 1;
-            ChooseResultdataGridView.ColumnCount = 15;
-            ChooseResultdataGridView.Rows[0].Height = 45;
-
-            for (int i = 0; i < ChooseResultdataGridView.ColumnCount; i++)
-            {
-                ChooseResultdataGridView.Columns[i].Width = 55;
-            }
-
             HeapDataGridView.ColumnHeadersVisible = false;
             HeapDataGridView.RowHeadersVisible = false;
             HeapDataGridView.RowCount = 4;
@@ -59,6 +48,17 @@ namespace QueueWithPrioritete
                 HeapDataGridView.Columns[i].Width = 55;
             }
 
+            ChooseResultdataGridView.ColumnHeadersVisible = false;
+            ChooseResultdataGridView.RowHeadersVisible = false;
+            ChooseResultdataGridView.RowCount = 1;
+            ChooseResultdataGridView.ColumnCount = 15;
+            ChooseResultdataGridView.Rows[0].Height = 45;
+
+            for (int i = 0; i < ChooseResultdataGridView.ColumnCount; i++)
+            {
+                ChooseResultdataGridView.Columns[i].Width = 55;
+            }
+
             Heap = new int[CAPACITY];
             size = 0;
             random = new Random();
@@ -69,30 +69,29 @@ namespace QueueWithPrioritete
             }
         }
 
-        private int ParentElem(int i) => (i - 1) / 2;
-        private int LeftChild(int i) => 2 * i + 1;
-        private int RightChild(int i) => 2 * i + 2;
+        private int ParentIndex(int i) => (i - 1) / 2;
+        private int LeftChildIndex(int i) => 2 * i + 1;
+        private int RightChildIndex(int i) => 2 * i + 2;
 
         private void Up(int index)
         {
 
-            while (index > 0 && Heap[ParentElem(index)] < Heap[index])
+            while (index > 0 && Heap[ParentIndex(index)] < Heap[index])
             {
-                int parent = ParentElem(index);
+                int parent = ParentIndex(index);
                 (Heap[index], Heap[parent]) = (Heap[parent], Heap[index]);
-
                 index = parent;
             }
 
         }
-
+        
         private void Down(int index)
         {
 
-            while (LeftChild(index) < size)
+            while (LeftChildIndex(index) < size)
             {
-                int left = LeftChild(index);
-                int right = RightChild(index);
+                int left = LeftChildIndex(index);
+                int right = RightChildIndex(index);
                 int largest = left;
 
                 if (right < size && Heap[right] > Heap[left])
@@ -107,14 +106,14 @@ namespace QueueWithPrioritete
 
                 index = largest;
             }
-
         }
-
+        
         private void Insert(int value)
         {
             if (size >= CAPACITY)
             {
-                throw new Exception("Очередь переполнена!");
+                MessageBox.Show("Очередь переполнена!");
+                return;
             }
 
             Heap[size] = value;
@@ -140,51 +139,30 @@ namespace QueueWithPrioritete
             size = 0;
         }
 
-        public void print(int[] a)
+        public void printArray(int[] a)
+        {
+            for (int i = 0; i < CAPACITY; i++)
+            {
+                ArrayDataGridView.Rows[0].Cells[i].Value = Heap[i];
+            }
+        }
+        public void printTree(int[] a)
         {
             HeapDataGridView.Rows[0].Cells[7].Value = a[0];
-
-            if (1 < a.Length && a[1] != 0)
-                HeapDataGridView.Rows[1].Cells[3].Value = a[1];
-
-            if (2 < a.Length && a[2] != 0)
-                HeapDataGridView.Rows[1].Cells[11].Value = a[2];
-
-            if (3 < a.Length && a[3] != 0)
-                HeapDataGridView.Rows[2].Cells[1].Value = a[3];
-
-            if (4 < a.Length && a[4] != 0)
-                HeapDataGridView.Rows[2].Cells[5].Value = a[4];
-
-            if (5 < a.Length && a[5] != 0)
-                HeapDataGridView.Rows[2].Cells[9].Value = a[5];
-
-            if (6 < a.Length && a[6] != 0)
-                HeapDataGridView.Rows[2].Cells[13].Value = a[6];
-
-            if (7 < a.Length && a[7] != 0)
-                HeapDataGridView.Rows[3].Cells[0].Value = a[7];
-
-            if (8 < a.Length && a[8] != 0)
-                HeapDataGridView.Rows[3].Cells[2].Value = a[8];
-
-            if (9 < a.Length && a[9] != 0)
-                HeapDataGridView.Rows[3].Cells[4].Value = a[9];
-
-            if (10 < a.Length && a[10] != 0)
-                HeapDataGridView.Rows[3].Cells[6].Value = a[10];
-
-            if (11 < a.Length && a[11] != 0)
-                HeapDataGridView.Rows[3].Cells[8].Value = a[11];
-
-            if (12 < a.Length && a[12] != 0)
-                HeapDataGridView.Rows[3].Cells[10].Value = a[12];
-
-            if (13 < a.Length && a[13] != 0)
-                HeapDataGridView.Rows[3].Cells[12].Value = a[13];
-
-            if (14 < a.Length && a[14] != 0)
-                HeapDataGridView.Rows[3].Cells[14].Value = a[14];
+            HeapDataGridView.Rows[1].Cells[3].Value = a[1];
+            HeapDataGridView.Rows[1].Cells[11].Value = a[2];
+            HeapDataGridView.Rows[2].Cells[1].Value = a[3];
+            HeapDataGridView.Rows[2].Cells[5].Value = a[4];
+            HeapDataGridView.Rows[2].Cells[9].Value = a[5]; 
+            HeapDataGridView.Rows[2].Cells[13].Value = a[6];
+            HeapDataGridView.Rows[3].Cells[0].Value = a[7];
+            HeapDataGridView.Rows[3].Cells[2].Value = a[8]; 
+            HeapDataGridView.Rows[3].Cells[4].Value = a[9];
+            HeapDataGridView.Rows[3].Cells[6].Value = a[10];
+            HeapDataGridView.Rows[3].Cells[8].Value = a[11];
+            HeapDataGridView.Rows[3].Cells[10].Value = a[12];
+            HeapDataGridView.Rows[3].Cells[12].Value = a[13];
+            HeapDataGridView.Rows[3].Cells[14].Value = a[14];
         }
 
         public void Clear_Tab()
@@ -216,24 +194,101 @@ namespace QueueWithPrioritete
         private void CreateQueueBtn_Click(object sender, EventArgs e)
         {
             CreateRandQueue();
-            for (int i = 0; i < CAPACITY; i++)
-            {
-                if (Heap[i] != 0)
-                    ArrayDataGridView.Rows[0].Cells[i].Value = Heap[i];
-            }
-
-            print(Heap);
+            printArray(Heap);
+            printTree(Heap);
         }
 
         private void ClearQueueBtn_Click(object sender, EventArgs e)
         {
             ClearQueue();
-            
+            Clear_Tab();
         }
 
         private void GetLargestBtn_Click(object sender, EventArgs e)
         {
+            int max = ExtractMax();
+            if (max == -1) return;
 
+            bool placed = false;
+            for (int i = 0; i < ChooseResultdataGridView.ColumnCount; i++)
+            {
+                if (ChooseResultdataGridView.Rows[0].Cells[i].Value == null ||
+                    ChooseResultdataGridView.Rows[0].Cells[i].Value.ToString() == "")
+                {
+                    ChooseResultdataGridView.Rows[0].Cells[i].Value = max;
+                    placed = true;
+                    break;
+                }
+            }
+
+            if (!placed)
+            {
+                MessageBox.Show("Массив результата выборок заполнен!");
+            }
+
+            printArray(Heap);
+            printTree(Heap);
+        }
+        
+        private int ExtractMax()
+        {
+            if (size == 0)
+            {
+                MessageBox.Show("Очередь пуста!");
+                return -1;
+            }
+
+            int max = Heap[0];
+            Heap[0] = Heap[size - 1];
+            Heap[size - 1] = 0;
+            size--;
+            Down(0);
+            return max;
+        }
+
+        private void NewBtn_Click(object sender, EventArgs e)
+        {
+            int value = (int) NewElemDropDown.Value;
+            Insert(value);
+            printArray(Heap);
+            printTree(Heap);
+        }
+
+        private void ChangePrioriteteBtn_Click(object sender, EventArgs e)
+        {
+            int removedValue = (int) PrioriteteFromDropDown.Value;
+            int addedValue = (int) PrioriteteToDropDown.Value;
+            int indexRemovedValue = 0;
+
+            bool found = false;
+            for (int i = 0; i < size; i++)
+            {
+                if (Heap[i] == removedValue) 
+                {
+                    Heap[i] = addedValue;
+                    indexRemovedValue = i;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                MessageBox.Show("Элемент не найден! ");
+                return;
+            }
+
+            if (removedValue > addedValue)
+            {
+                Down(indexRemovedValue);
+            }
+
+            else { 
+                Up(indexRemovedValue); 
+            }
+
+            printArray(Heap);
+            printTree(Heap);
         }
     }
 }
